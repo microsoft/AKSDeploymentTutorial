@@ -1,6 +1,6 @@
 
 FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
-    
+
 RUN echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list
 
 USER root
@@ -26,7 +26,7 @@ RUN curl -o ~/miniconda.sh -O  https://repo.continuum.io/miniconda/Miniconda3-la
     /opt/conda/bin/conda create -y --name py$PYTHON_VERSION python=$PYTHON_VERSION numpy pyyaml scipy \
     ipython pandas scikit-learn && \
     /opt/conda/bin/conda clean -ya
-    
+
 ENV PATH /opt/conda/envs/py$PYTHON_VERSION/bin:$PATH
 ENV LD_LIBRARY_PATH /opt/conda/envs/py$PYTHON_VERSION/lib:/usr/local/cuda/lib64/:$LD_LIBRARY_PATH
 
