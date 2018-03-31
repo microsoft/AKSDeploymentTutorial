@@ -2,9 +2,11 @@
 
 # Deploy Deep Learning CNN on Kubernetes Cluster with GPUs
 In this repository there are a number of tutorials in Jupyter notebooks that have step-by-step instruction on how to deploy a pretrained deep learning model on a GPU enabled Kubernetes cluster. The tutorials cover how to deploy models from the following deep learning frameworks:
-* TensofrFlow
+* [TensorFlow](Tensorflow)
 * Keras (TensorFlow backend)
 * Pytorch
+
+![alt text](static/example.png "Example Classification")
  
  For each framework we go through 7 steps:
  * Model development where we load the pretrained model and test it by using it to score images
