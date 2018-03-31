@@ -1,12 +1,12 @@
 import base64
-import urllib
-import requests
 import json
-from PIL import Image, ImageOps
+import urllib
 from io import BytesIO
-import toolz
-import matplotlib.pyplot as plt
+
 import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
+import toolz
+from PIL import Image, ImageOps
 
 
 def read_image_from(url):
