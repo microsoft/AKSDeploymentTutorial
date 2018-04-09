@@ -39,19 +39,13 @@ def to_img(img_url):
                       to_rgb,
                       resize(new_size=(224,224)))
 
-
-def img_url_to_json(url):
-    img_data = toolz.pipe(url,
-                          to_img,
+def img_url_to_json(url, label='image'):
+    img_data = toolz.pipe(url, 
+                          to_img, 
                           to_base64)
-    return json.dumps({'input':'[\"{0}\"]'.format(img_data)})
-
-def img_url_to_json_dict(url):
-    img_url_name = url.split('/')[-1]
-    encoded = to_base64(to_img(url))
-    img_dict = {img_url_name: encoded}
+    img_dict = {label: img_data}
     body = json.dumps(img_dict)
-    return json.dumps({'input':'{}'.format(body)})
+    return json.dumps({'input':'{0}'.format(body)})
 
 
 def  _plot_image(ax, img):
