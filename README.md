@@ -4,7 +4,7 @@
 In this repository there are a number of tutorials in Jupyter notebooks that have step-by-step instructions on how to deploy a pretrained deep learning model on a GPU enabled Kubernetes cluster. The tutorials cover how to deploy models from the following deep learning frameworks:
 * [TensorFlow](Tensorflow)
 * [Keras (TensorFlow backend)](Keras_Tensorflow)
-* Pytorch
+* Pytorch (Coming soon)
 
 ![alt text](static/example.png "Example Classification")
  
