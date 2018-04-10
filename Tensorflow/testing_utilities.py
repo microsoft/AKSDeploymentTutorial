@@ -40,11 +40,11 @@ def to_img(img_url):
                       resize(new_size=(224,224)))
 
 
-def img_url_to_json(url):
+def img_url_to_json(url, label='image'):
     img_data = toolz.pipe(url,
                           to_img,
                           to_base64)
-    return json.dumps({'input':'[\"{0}\"]'.format(img_data)})
+    return json.dumps({'input':{label:'\"{0}\"'.format(img_data)}})
 
 
 def  _plot_image(ax, img):
@@ -61,7 +61,7 @@ def  _plot_image(ax, img):
 
 
 def _plot_prediction_bar(ax, r):
-    perf = list(c[1] for c in r.json()['result'][0])
+    perf = list(c[1] for c in r.json()['result'][0]['image'])
     ax.barh(range(3, 0, -1), perf, align='center', color='#55DD55')
     ax.tick_params(axis='both',       
                    which='both',      
@@ -70,7 +70,7 @@ def _plot_prediction_bar(ax, r):
                    left='off',
                    right='off',
                    labelbottom='off') 
-    tick_labels = reversed(list(' '.join(c[0].split()[1:]).split(',')[0] for c in r.json()['result'][0]))
+    tick_labels = reversed(list(' '.join(c[0].split()[1:]).split(',')[0] for c in r.json()['result'][0]['image']))
     ax.yaxis.set_ticks([1,2,3])
     ax.yaxis.set_ticklabels(tick_labels, position=(0.5,0), minor=False, horizontalalignment='center')
 
