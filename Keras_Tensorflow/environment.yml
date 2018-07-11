@@ -1,0 +1,15 @@
+name: AksDeployment
+dependencies:
+  - python=3.5
+  - pip:
+    - ipykernel
+    - Pillow
+    - keras
+    - wget
+    - matplotlib
+    - aiohttp
+    - toolz
+    - tqdm
+    - tornado<5
+    - azure-cli
+    - tensorflow[gpu]
