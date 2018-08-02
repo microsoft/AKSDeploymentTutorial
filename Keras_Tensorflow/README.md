@@ -11,3 +11,10 @@ The tutorial is made up of seven notebooks:
  * [Creating our Kubernetes cluster](04_DeployOnAKS.ipynb) and deploying our application to it
  * [Testing the deployed model](05_TestWebApp.ipynb)
  * [Testing the throughput](06_SpeedTestWebApp.ipynb) of our model
+
+ Before you start any notebooks, execute the below command in your terminal to create a conda environment.
+ ```bash
+ conda env create -f environment.yml
+ ```
+ 
+ When you start your notebooks, make sure to use the kernel corresponding to this environment. 
