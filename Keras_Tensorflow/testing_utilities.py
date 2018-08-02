@@ -7,6 +7,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import toolz
 from PIL import Image, ImageOps
+import random
 
 
 def read_image_from(url):
@@ -62,7 +63,7 @@ def  _plot_image(ax, img):
 
 
 def _plot_prediction_bar_dict(ax, r):
-    res_dict = eval(r.json()['result'])[0][0]
+    res_dict = eval(r.json()['result'])[0]
     perf = list(c[2] for c in list(res_dict.values())[0])
     ax.barh(range(3, 0, -1), perf, align='center', color='#55DD55')
     ax.tick_params(axis='both',       
@@ -90,3 +91,25 @@ def plot_predictions_dict(images, classification_results):
         _plot_image(ax, img)
         ax = fig.add_subplot(gg2[3, 1:9])
         _plot_prediction_bar_dict(ax, r)
+        
+def write_json_to_file(json_dict, filename, mode='w'):
+    with open(filename, mode) as outfile:
+        json.dump(json_dict, outfile, indent=4, sort_keys=True)
+        outfile.write('\n\n')
+
+def gen_variations_of_one_image(IMAGEURL, num, label='image'):
+    out_images = []
+    img = to_img(IMAGEURL).convert('RGB')
+    # Flip the colours for one-pixel
+    # "Different Image"
+    for i in range(num):
+        diff_img = img.copy()
+        rndm_pixel_x_y = (random.randint(0, diff_img.size[0]-1), 
+                          random.randint(0, diff_img.size[1]-1))
+        current_color = diff_img.getpixel(rndm_pixel_x_y)
+        diff_img.putpixel(rndm_pixel_x_y, current_color[::-1])
+        b64img = to_base64(diff_img)
+        img_dict = {label: b64img}
+        body = json.dumps(img_dict)
+        out_images.append(json.dumps({'input':'{}'.format(body)}))
+    return out_images
