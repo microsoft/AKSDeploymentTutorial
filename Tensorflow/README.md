@@ -8,7 +8,7 @@ The tutorial is made up of the following notebooks:
  * [Creating our Kubernetes cluster](04_DeployOnAKS.ipynb) and deploying our application to it
  * [Testing the deployed model](05_TestWebApp.ipynb)
  * [Testing the throughput](06_SpeedTestWebApp.ipynb) of our model
- * [Cleaning the resources](07_TearDown) used
+ * [Cleaning the resources](07_TearDown.ipynb) used
 
   Before you start any notebooks, execute the below command in your terminal to create a conda environment.
  ```bash

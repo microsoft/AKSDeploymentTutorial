@@ -8,7 +8,7 @@ In this repository there are a number of tutorials in Jupyter notebooks that hav
 
 ![alt text](static/example.png "Example Classification")
  
- For each framework we go through 7 steps:
+ For each framework we go through the following steps:
  * Model development where we load the pretrained model and test it by using it to score images
  * Developing the interface our Flask app will use to load and call the model
  * Building the Docker Image with our Flask REST API and model
@@ -16,10 +16,11 @@ In this repository there are a number of tutorials in Jupyter notebooks that hav
  * Creating our Kubernetes cluster and deploying our application to it
  * Testing the deployed model
  * Testing the throughput of our model
+ * Cleaning up resources
  
 The application we will develop is a simple image classification service, where we will submit an image and get back what class the image belongs to. 
 
-If you already have a Docker image that you would like to deploy or you simply want to use the image we built you can skip the first four notebooks.
+If you already have a Docker image that you would like to deploy you can skip the first four notebooks.
 
 
 # Contributing
