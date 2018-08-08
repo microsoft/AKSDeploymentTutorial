@@ -1,6 +1,7 @@
 ### Authors: Mathew Salvaris and Fidan Boylu Uz
 
 # Deploy Deep Learning CNN on Kubernetes Cluster with GPUs
+## Overview
 In this repository there are a number of tutorials in Jupyter notebooks that have step-by-step instructions on how to deploy a pretrained deep learning model on a GPU enabled Kubernetes cluster. The tutorials cover how to deploy models from the following deep learning frameworks:
 * [TensorFlow](Tensorflow)
 * [Keras (TensorFlow backend)](Keras_Tensorflow)
@@ -8,7 +9,7 @@ In this repository there are a number of tutorials in Jupyter notebooks that hav
 
 ![alt text](static/example.png "Example Classification")
  
- For each framework we go through 7 steps:
+ For each framework, we go through the following steps:
  * Model development where we load the pretrained model and test it by using it to score images
  * Developing the interface our Flask app will use to load and call the model
  * Building the Docker Image with our Flask REST API and model
@@ -16,11 +17,35 @@ In this repository there are a number of tutorials in Jupyter notebooks that hav
  * Creating our Kubernetes cluster and deploying our application to it
  * Testing the deployed model
  * Testing the throughput of our model
+ * Cleaning up resources
  
 The application we will develop is a simple image classification service, where we will submit an image and get back what class the image belongs to. 
 
-If you already have a Docker image that you would like to deploy or you simply want to use the image we built you can skip the first four notebooks.
+If you already have a Docker image that you would like to deploy you can skip the first four notebooks.
 
+## Setting Up
+1. Clone the repo:
+```bash
+git clone <repo web URL>
+```
+2. Login to Docker with your username and password.
+```bash
+docker login
+```
+3. Go to the framework folder you would like to run the notebooks for.
+4. Create a conda environment:
+ ```bash
+ conda env create -f environment.yml
+ ```
+5.  Activate the environment:
+ ```bash 
+ source activate <environment name>
+ ```
+6. Run:
+```bash
+jupyter notebook
+```
+7. Start the first notebook and make sure the kernel corresponding to the above environment is selected.
 
 # Contributing
 
