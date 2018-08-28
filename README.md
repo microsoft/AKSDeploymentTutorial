@@ -23,6 +23,14 @@ The application we will develop is a simple image classification service, where 
 
 If you already have a Docker image that you would like to deploy you can skip the first four notebooks.
 
+**NOTE**: The tutorial goes through step by step how to deploy a deep learning model on Azure it **does** **not** include enterprise best practices such as securing the endpoints and setting up remote logging etc. 
+
+## Prerequisites
+* Linux(Ubuntu). The tutorial was developed on an Azure Linux DSVM
+* [Docker installed](https://docs.docker.com/v17.12/install/linux/docker-ee/ubuntu/). NOTE: Even with docker installed you may need to set it up so that you don't require sudo to execute docker commands see ["Manage Docker as a non-root user"](https://docs.docker.com/install/linux/linux-postinstall/) 
+* [Dockerhub account](https://hub.docker.com/)
+* Port 9999 open: Jupyter notebook will use port 9999 so please ensure that it is open. For instructions on how to do that on Azure see [here](https://blogs.msdn.microsoft.com/pkirchner/2016/02/02/allow-incoming-web-traffic-to-web-server-in-azure-vm/)
+
 ## Setting Up
 1. Clone the repo:
 ```bash
@@ -46,6 +54,9 @@ docker login
 jupyter notebook
 ```
 7. Start the first notebook and make sure the kernel corresponding to the above environment is selected.
+
+## Cleaning up
+To remove the conda environment created see [here](https://conda.io/docs/commands/env/conda-env-remove.html)
 
 # Contributing
 
