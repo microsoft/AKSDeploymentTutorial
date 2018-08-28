@@ -55,6 +55,9 @@ jupyter notebook
 ```
 7. Start the first notebook and make sure the kernel corresponding to the above environment is selected.
 
+## Cleaning up
+To remove the conda environment created see [here](https://conda.io/docs/commands/env/conda-env-remove.html)
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
