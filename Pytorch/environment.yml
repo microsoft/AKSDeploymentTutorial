@@ -1,4 +1,4 @@
-name: AKSDeploymentKeras
+name: AKSDeploymentPytorch
 channels:
   - conda-forge
   - pytorch
