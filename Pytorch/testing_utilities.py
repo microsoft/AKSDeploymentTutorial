@@ -9,7 +9,6 @@ import toolz
 from PIL import Image, ImageOps
 import random
 
-
 def read_image_from(url):
     return toolz.pipe(url, 
                       urllib.request.urlopen,
@@ -40,13 +39,12 @@ def to_img(img_url):
                       to_rgb,
                       resize(new_size=(224,224)))
 
+
 def img_url_to_json(url, label='image'):
-    img_data = toolz.pipe(url, 
-                          to_img, 
+    img_data = toolz.pipe(url,
+                          to_img,
                           to_base64)
-    img_dict = {label: img_data}
-    body = json.dumps(img_dict)
-    return json.dumps({'input':'{0}'.format(body)})
+    return json.dumps({'input':{label:'\"{0}\"'.format(img_data)}})
 
 
 def  _plot_image(ax, img):
@@ -62,9 +60,8 @@ def  _plot_image(ax, img):
     return ax
 
 
-def _plot_prediction_bar_dict(ax, r):
-    res_dict = eval(r.json()['result'])[0]
-    perf = list(c[2] for c in list(res_dict.values())[0])
+def _plot_prediction_bar(ax, r):
+    perf = list(c[1] for c in r.json()['result'][0]['image'])
     ax.barh(range(3, 0, -1), perf, align='center', color='#55DD55')
     ax.tick_params(axis='both',       
                    which='both',      
@@ -73,12 +70,12 @@ def _plot_prediction_bar_dict(ax, r):
                    left='off',
                    right='off',
                    labelbottom='off') 
-    tick_labels = reversed(list(c[1] for c in list(res_dict.values())[0]))
+    tick_labels = reversed(list(' '.join(c[0].split()[1:]).split(',')[0] for c in r.json()['result'][0]['image']))
     ax.yaxis.set_ticks([1,2,3])
     ax.yaxis.set_ticklabels(tick_labels, position=(0.5,0), minor=False, horizontalalignment='center')
 
     
-def plot_predictions_dict(images, classification_results):
+def plot_predictions(images, classification_results):
     if len(images)!=6:
         raise Exception('This method is only designed for 6 images')
     gs = gridspec.GridSpec(2, 3)
@@ -90,13 +87,13 @@ def plot_predictions_dict(images, classification_results):
         ax = fig.add_subplot(gg2[0:3, :])
         _plot_image(ax, img)
         ax = fig.add_subplot(gg2[3, 1:9])
-        _plot_prediction_bar_dict(ax, r)
+        _plot_prediction_bar(ax, r)
         
 def write_json_to_file(json_dict, filename, mode='w'):
     with open(filename, mode) as outfile:
-        json.dump(json_dict, outfile, indent=4, sort_keys=True)
+        json.dump(json_dict, outfile, indent=4,sort_keys=True)
         outfile.write('\n\n')
-
+        
 def gen_variations_of_one_image(IMAGEURL, num, label='image'):
     out_images = []
     img = to_img(IMAGEURL).convert('RGB')
@@ -109,7 +106,5 @@ def gen_variations_of_one_image(IMAGEURL, num, label='image'):
         current_color = diff_img.getpixel(rndm_pixel_x_y)
         diff_img.putpixel(rndm_pixel_x_y, current_color[::-1])
         b64img = to_base64(diff_img)
-        img_dict = {label: b64img}
-        body = json.dumps(img_dict)
-        out_images.append(json.dumps({'input':'{}'.format(body)}))
+        out_images.append(json.dumps({'input':{label:'\"{0}\"'.format(b64img)}}))
     return out_images
