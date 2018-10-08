@@ -1,7 +1,7 @@
 
-# Deploy ResNet 152  model on GPU enaled Kubernetes cluster using Keras with Tensorflow
+# Deploy ResNet 152  model on GPU enabled Kubernetes cluster using PyTorch
 
-In this folder are the tutorials for deploying a Keras model (with Tensorflow backend) on a Kubernetes cluster.
+In this folder are the tutorials for deploying a PyTorch on a Kubernetes cluster.
 
 The tutorial is made up of the following notebooks:
  * [Model development](00_DevelopModel.ipynb) where we load the pretrained model and test it by using it to score images
