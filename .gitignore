@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Project files to ignore
+*.jpg
+synset.txt
+*.ckpt
+*.tar.gz
+flaskwebapp
