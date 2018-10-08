@@ -106,3 +106,4 @@ synset.txt
 *.ckpt
 *.tar.gz
 flaskwebapp
+driver.py
