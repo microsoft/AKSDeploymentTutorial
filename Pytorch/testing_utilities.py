@@ -51,12 +51,12 @@ def  _plot_image(ax, img):
     ax.imshow(to_img(img))
     ax.tick_params(axis='both',       
                    which='both',      
-                   bottom='off',      
-                   top='off',         
-                   left='off',
-                   right='off',
-                   labelleft='off',
-                   labelbottom='off') 
+                   bottom=False,      
+                   top=False,         
+                   left=False,
+                   right=False,
+                   labelleft=False,
+                   labelbottom=False) 
     return ax
 
 
@@ -65,11 +65,11 @@ def _plot_prediction_bar(ax, r):
     ax.barh(range(3, 0, -1), perf, align='center', color='#55DD55')
     ax.tick_params(axis='both',       
                    which='both',      
-                   bottom='off',      
-                   top='off',         
-                   left='off',
-                   right='off',
-                   labelbottom='off') 
+                   bottom=False,      
+                   top=False,         
+                   left=False,
+                   right=False,
+                   labelbottom=False) 
     tick_labels = reversed(list(' '.join(c[0].split()[1:]).split(',')[0] for c in r.json()['result'][0]['image']))
     ax.yaxis.set_ticks([1,2,3])
     ax.yaxis.set_ticklabels(tick_labels, position=(0.5,0), minor=False, horizontalalignment='center')
