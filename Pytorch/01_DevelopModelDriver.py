@@ -30,7 +30,6 @@ import logging
 import os
 import timeit as t
 from io import BytesIO
-from pprint import pprint
 
 import PIL
 import numpy as np
@@ -38,7 +37,6 @@ import torch
 import torch.nn as nn
 import torchvision
 from PIL import Image
-from testing_utilities import img_url_to_json
 from torchvision import models, transforms
 
 # We use the writefile magic to write the contents of the below cell to driver.py which includes the driver methods.
@@ -146,6 +144,10 @@ def version():
 # -
 
 # Let's test the module.
+
+import logging
+from testing_utilities import img_url_to_json
+from pprint import pprint
 
 logging.basicConfig(level=logging.DEBUG)
 

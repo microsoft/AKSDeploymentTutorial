@@ -22,7 +22,6 @@
 
 # In this noteook, we will go through the steps to load the ResNet152 model, pre-process the images to the required format and call the model to find the top predictions.
 
-# +
 import PIL
 import numpy as np
 import torch
@@ -32,14 +31,14 @@ import wget
 from PIL import Image
 from torchvision import models, transforms
 
-# -
-
 print(torch.__version__)
 print(torchvision.__version__)
 
+# We download the synset for the model. This translates the output of the model to a specific label.
+
 !wget "http://data.dmlc.ml/mxnet/models/imagenet/synset.txt"
 
-# We first load the model which we imported from the resnet152 module. This can take about 10s.
+# We first load the model which we imported torchvision. This can take about 10s.
 
 # %%time
 model = models.resnet152(pretrained=True)
@@ -49,6 +48,7 @@ model = models.resnet152(pretrained=True)
 model=model.cuda()
 
 print(model)
+print('Number of parameters {}'.format(sum([param.view(-1).size()[0] for param in model.parameters()])))
 
 # Let's test our model with an image of a Lynx.
 
@@ -58,7 +58,7 @@ img_path = '220px-Lynx_lynx_poing.jpg'
 print(Image.open(img_path).size)
 Image.open(img_path)
 
-# Below, we load the image by resizing to (224, 224) and then preprocessing using the methods from keras preprocessing and imagenet utilities.
+# Below, we load the image. Then we compose transformation which resize the image to (224, 224) and then convert it to a PyTorch tensor and normalize the pixel values.
 
 img = Image.open(img_path).convert('RGB')
 
@@ -71,7 +71,7 @@ preprocess_input = transforms.Compose([
 img = Image.open(img_path)
 img = preprocess_input(img)
 
-# Now, let's call the model on our image to predict the top 3 labels. This will take a few seconds.
+# Let's make a label look up function to make it easy to lookup the classes from the synset file
 
 def create_label_lookup():
     with open('synset.txt', 'r') as f:
@@ -82,7 +82,11 @@ def create_label_lookup():
 
 label_lookup = create_label_lookup()
 
+# We will apply softmax to the output of the model to get probabilities for each label
+
 softmax = nn.Softmax(dim=1).cuda()
+
+# Now, let's call the model on our image to predict the top 3 labels. This will take a few seconds.
 
 model = model.eval()
 

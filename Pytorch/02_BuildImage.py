@@ -3,9 +3,9 @@
 #   jupytext_format_version: '1.3'
 #   jupytext_formats: py:light
 #   kernelspec:
-#     display_name: Python [conda env:AKSDeploymentKeras]
+#     display_name: Python [conda env:AKSDeploymentPytorch]
 #     language: python
-#     name: conda-env-AKSDeploymentKeras-py
+#     name: conda-env-AKSDeploymentPytorch-py
 #   language_info:
 #     codemirror_mode:
 #       name: ipython
@@ -15,7 +15,7 @@
 #     name: python
 #     nbconvert_exporter: python
 #     pygments_lexer: ipython3
-#     version: 3.5.5
+#     version: 3.6.6
 # ---
 
 # # Build Docker image 
@@ -27,36 +27,33 @@ import os
 from os import path
 import json
 import shutil
-from dotenv import set_key, get_key
+from dotenv import set_key, get_key, find_dotenv
+from pathlib import Path
 
 # We will be using the following Docker information to push the image to docker hub.
 
+env_path = find_dotenv()
+if env_path=='':
+    Path('.env').touch()
+    env_path = find_dotenv()
+
 # +
 # "YOUR_DOCKER_LOGIN"
-
-# + {"tags": ["parameters"]}
-# %%writefile .env
-# This cell is tagged `parameters`
-# Please modify the values below as you see fit
-
-# Your docker login and image repository name
-
-
 # -
 
-set_key('.env', 'docker_login', 'masalvar')
+set_key(env_path, "docker_login", "masalvar")
 
-set_key('.env', 'image_repo', 'pytorch-gpu')
+set_key(env_path, "image_repo", "pytorch-gpu")
 
 !cat .env
 
-os.makedirs('flaskwebapp', exist_ok=True)
-os.makedirs(os.path.join('flaskwebapp', 'nginx'), exist_ok=True)
-os.makedirs(os.path.join('flaskwebapp', 'etc'), exist_ok=True)
+os.makedirs("flaskwebapp", exist_ok=True)
+os.makedirs(os.path.join("flaskwebapp", "nginx"), exist_ok=True)
+os.makedirs(os.path.join("flaskwebapp", "etc"), exist_ok=True)
 
-shutil.copy('synset.txt', 'flaskwebapp')
-shutil.copy('driver.py', 'flaskwebapp')
-os.listdir('flaskwebapp')
+shutil.copy("synset.txt", "flaskwebapp")
+shutil.copy("driver.py", "flaskwebapp")
+os.listdir("flaskwebapp")
 
 # Below, we create the module for the Flask web application.
 
@@ -274,13 +271,13 @@ CMD ["supervisord", "-c", "/code/etc/supervisord.conf"]
 
 # The image name below refers to our dockerhub account. If you wish to push the image to your account make sure you change the docker login.
 
-image_name = get_key('.env', 'docker_login') + '/' +get_key('.env', 'image_repo') 
+image_name = get_key(env_path, 'docker_login') + '/' +get_key(env_path, 'image_repo') 
 application_path = 'flaskwebapp'
 docker_file_location = path.join(application_path, 'dockerfile')
 
 # Next, we build our docker image. The output of this cell is cleared from this notebook as it is quite long due to all the installations required to build the image. However, you should make sure you see 'Successfully built' and 'Successfully tagged' messages in the last line of the output when you run the cell. 
 
-!docker build -t $image_name -f $docker_file_location $application_path --no-cache
+!docker build -t $image_name -f $docker_file_location $application_path
 
 # Below we will push the image created to our dockerhub registry. Make sure you have already logged in to the appropriate dockerhub account using the docker login command. If you haven't loged in to the approrpiate dockerhub account you will get an error.
 

@@ -27,10 +27,9 @@ import numpy as np
 from testing_utilities import img_url_to_json, to_img, plot_predictions
 import requests
 import json
-
 # %matplotlib inline
 
-# service_json = !kubectl get service azure-dl -o json
+service_json = !kubectl get service azure-dl -o json
 service_dict = json.loads("".join(service_json))
 app_url = service_dict["status"]["loadBalancer"]["ingress"][0]["ip"]
 
@@ -47,13 +46,12 @@ IMAGEURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Lynx_lynx_
 
 plt.imshow(to_img(IMAGEURL))
 
-# headers = {'content-type': 'application/json','X-Marathon-App-Id': app_id}
 headers = {"content-type": "application/json"}
 jsonimg = img_url_to_json(IMAGEURL)
 r = requests.post(
     scoring_url, data=jsonimg, headers=headers
 )  # Run the request twice since the first time takes a
-# little longer due to the loading of the model
+   # little longer due to the loading of the model
 # %time r = requests.post(scoring_url, data=jsonimg, headers=headers)
 r.json()
 

@@ -21,7 +21,9 @@
 # # Tear it all down
 # Once you are done with your cluster you can use the following two commands to destroy it all.
 
-from dotenv import get_key
+from dotenv import get_key, find_dotenv
+
+env_path = find_dotenv(raise_error_if_not_found=True)
 
 # Once you are done with your cluster you can use the following two commands to destroy it all. First, delete the application.
 
@@ -29,12 +31,10 @@ from dotenv import get_key
 
 # Next, you delete the AKS cluster. This step may take a few minutes.
 
-get_key('.env', 'resource_group')
-
-!az aks delete -n {get_key('.env', 'aks_name')} \
-               -g {get_key('.env', 'resource_group')} \
+!az aks delete -n {get_key(env_path, 'aks_name')} \
+               -g {get_key(env_path, 'resource_group')} \
                -y
 
 # Finally, you should delete the resource group. This also deletes the AKS cluster and can be used instead of the above command if the resource group is only used for this purpose.
 
-!az group delete --name {get_key('.env', 'resource_group')} -y
+!az group delete --name {get_key(env_path, 'resource_group')} -y

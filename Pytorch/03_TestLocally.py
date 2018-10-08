@@ -23,22 +23,20 @@
 
 # This notebook pulls some images and tests them against the local web app running inside the Docker container we made previously.
 
-# %load_ext autoreload
-# %autoreload 2
 import matplotlib.pyplot as plt
 import numpy as np
 from testing_utilities import to_img, img_url_to_json, plot_predictions
 import requests
 from dotenv import get_key
-
 # %matplotlib inline
 
-image_name = get_key(".env", "docker_login") + "/" + get_key(".env", "image_repo")
+env_path = find_dotenv(raise_error_if_not_found=True)
+image_name = get_key(env_path, "docker_login") + "/" + get_key(env_path, "image_repo")
 image_name
 
 # Run the Docker conatainer in the background and open port 80. Notice we are using nvidia-docker and not docker command.
 
-# + {"active": "ipynb", "language": "bash"}
+# + {"active": "ipynb"}
 # nvidia-docker run -p 80:80 $1
 # -
 
@@ -46,7 +44,7 @@ image_name
 
 !curl 'http://0.0.0.0:80/'
 
-!curl 'http://0.0.0.0:80/version' #reports tensorflow version
+!curl 'http://0.0.0.0:80/version' #reports pytorch version
 
 # Pull an image of a Lynx to test our local web app with.
 
@@ -93,7 +91,7 @@ timer_results
 
 print("Average time taken: {0:4.2f} ms".format(10 ** 3 * np.mean(timer_results)))
 
-# + {"active": "ipynb", "language": "bash"}
+# + {"active": "ipynb"}
 # docker stop $(docker ps -q)
 # -
 

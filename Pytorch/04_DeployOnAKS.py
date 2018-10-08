@@ -33,38 +33,26 @@
 
 import json
 from testing_utilities import write_json_to_file
-from dotenv import set_key, get_key
+from dotenv import set_key, get_key, find_dotenv
 
 # <a id='section1'></a>
 # ## Setup
 # Below are the various name definitions for the resources needed to setup AKS.
 
-set_key('.env', 'selected_subscription', 'Team Danielle Internal')
-set_key('.env', 'resource_group', 'msaksrg')
-set_key('.env', 'aks_name', 'msaks')
-set_key('.env', 'location', 'eastus')
+env_path = find_dotenv(raise_error_if_not_found=True)
 
-# + {"tags": ["parameters"]}
-# # %%writefile --append .env
-# # This cell is tagged `parameters`
-# # Please modify the values below as you see fit
+set_key(env_path, 'selected_subscription', 'Team Danielle Internal')
+set_key(env_path, 'resource_group', 'msaksrg')
+set_key(env_path, 'aks_name', 'msaks')
+set_key(env_path, 'location', 'eastus')
 
-# # If you have multiple subscriptions select the subscription you want to use 
-# selected_subscription = "Team Danielle Internal"
-
-# # Resource group, name and location for AKS cluster.
-# resource_group = "mabouaks" 
-# aks_name = "mabouaks"
-# location = "eastus"
-# -
-
-image_name = get_key('.env', 'docker_login') + '/' +get_key('.env', 'image_repo') 
+image_name = get_key(env_path, 'docker_login') + '/' +get_key(env_path, 'image_repo') 
 
 # <a id='section2'></a>
 # ## Azure account login
 # If you are not already logged in to an Azure account, the command below will initiate a login. It will pop up a browser where you can select an Azure account.
 
-# + {"active": "ipynb", "language": "bash"}
+# + {"active": "ipynb"}
 # list=`az account list -o table`
 # if [ "$list" == '[]' ] || [ "$list" == '' ]; then 
 #   az login -o table
@@ -73,7 +61,7 @@ image_name = get_key('.env', 'docker_login') + '/' +get_key('.env', 'image_repo'
 # fi
 # -
 
-!az account set --subscription "{get_key('.env', 'selected_subscription')}"
+!az account set --subscription "{get_key(env_path, 'selected_subscription')}"
 
 !az account show
 
@@ -87,13 +75,13 @@ image_name = get_key('.env', 'docker_login') + '/' +get_key('.env', 'image_repo'
 # ### Create resource group
 # Azure encourages the use of groups to organise all the Azure components you deploy. That way it is easier to find them but also we can deleted a number of resources simply by deleting the group.
 
-!az group create --name {get_key('.env', 'resource_group')} \
-                 --location {get_key('.env', 'location')}
+!az group create --name {get_key(env_path, 'resource_group')} \
+                 --location {get_key(env_path, 'location')}
 
 # Below, we create the AKS cluster in the resource group we created earlier. This can take up to 15 minutes.
 
-!az aks create --resource-group {get_key('.env', 'resource_group')}  \
-               --name {get_key('.env', 'aks_name')} \
+!az aks create --resource-group {get_key(env_path, 'resource_group')}  \
+               --name {get_key(env_path, 'aks_name')} \
                --node-count 1 \
                --generate-ssh-keys \
                -s Standard_NC6
@@ -109,7 +97,8 @@ image_name = get_key('.env', 'docker_login') + '/' +get_key('.env', 'image_repo'
 #
 # To configure kubectl to connect to the Kubernetes cluster, run the following command:
 
-!az aks get-credentials --resource-group $resource_group --name $aks_name
+!az aks get-credentials --resource-group {get_key(env_path, 'resource_group')}\
+                        --name {get_key(env_path, 'aks_name')}
 
 # Let's verify connection by listing the nodes.
 
