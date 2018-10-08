@@ -31,7 +31,6 @@
 #
 # This guide assumes is designed to be run on linux and requires that the Azure CLI is installed.
 
-import os
 import json
 from testing_utilities import write_json_to_file
 from dotenv import set_key, get_key

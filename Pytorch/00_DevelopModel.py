@@ -23,16 +23,15 @@
 # In this noteook, we will go through the steps to load the ResNet152 model, pre-process the images to the required format and call the model to find the top predictions.
 
 # +
+import PIL
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
 import torchvision
-from torchvision import datasets, models, transforms
-
-import numpy as np
-import PIL
-from PIL import Image
 import wget
+from PIL import Image
+from torchvision import models, transforms
+
 # -
 
 print(torch.__version__)

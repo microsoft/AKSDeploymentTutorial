@@ -25,7 +25,6 @@
 # +
 import asyncio
 import json
-import urllib.request
 from timeit import default_timer
 
 import aiohttp
@@ -41,16 +40,16 @@ print(aiohttp.__version__)
 # We will test our deployed service with 100 calls. We will only have 4 requests concurrently at any time. We have only deployed one pod on one node and increasing the number of concurrent calls does not really increase throughput. Feel free to try different values and see how the service responds.
 
 NUMBER_OF_REQUESTS = 100  # Total number of requests
-CONCURRENT_REQUESTS = 4   # Number of requests at a time
+CONCURRENT_REQUESTS = 4  # Number of requests at a time
 
 # Get the IP address of our service
 
 service_json = !kubectl get service azure-dl -o json
-service_dict = json.loads(''.join(service_json))
-app_url = service_dict['status']['loadBalancer']['ingress'][0]['ip']
+service_dict = json.loads("".join(service_json))
+app_url = service_dict["status"]["loadBalancer"]["ingress"][0]["ip"]
 
-scoring_url = 'http://{}/score'.format(app_url)
-version_url = 'http://{}/version'.format(app_url)
+scoring_url = "http://{}/score".format(app_url)
+version_url = "http://{}/version".format(app_url)
 
 !curl $version_url # Reports the Tensorflow Version
 
@@ -59,32 +58,40 @@ plt.imshow(to_img(IMAGEURL))
 
 # Here, we use varitions of the same image to test the service.
 
-url_list = [[scoring_url, jsonimg] for jsonimg in gen_variations_of_one_image(IMAGEURL, NUMBER_OF_REQUESTS)]
+url_list = [
+    [scoring_url, jsonimg]
+    for jsonimg in gen_variations_of_one_image(IMAGEURL, NUMBER_OF_REQUESTS)
+]
+
 
 def decode(result):
     return json.loads(result.decode("utf-8"))
 
+
 async def fetch(url, session, data, headers):
     start_time = default_timer()
-    async with session.request('post', url, data=data, headers=headers) as response:
+    async with session.request("post", url, data=data, headers=headers) as response:
         resp = await response.read()
         elapsed = default_timer() - start_time
         return resp, elapsed
+
 
 async def bound_fetch(sem, url, session, data, headers):
     # Getter function with semaphore.
     async with sem:
         return await fetch(url, session, data, headers)
 
+
 async def await_with_progress(coros):
-    results=[]
+    results = []
     for f in tqdm(asyncio.as_completed(coros), total=len(coros)):
         result = await f
-        results.append((decode(result[0]),result[1]))
+        results.append((decode(result[0]), result[1]))
     return results
 
+
 async def run(url_list, num_concurrent=CONCURRENT_REQUESTS):
-    headers = {'content-type': 'application/json'}
+    headers = {"content-type": "application/json"}
     tasks = []
     # create instance of Semaphore
     sem = asyncio.Semaphore(num_concurrent)
@@ -98,21 +105,26 @@ async def run(url_list, num_concurrent=CONCURRENT_REQUESTS):
             tasks.append(task)
         return await await_with_progress(tasks)
 
+
 # Below we run the 100 requests against our deployed service
 
 loop = asyncio.get_event_loop()
 start_time = default_timer()
-complete_responses = loop.run_until_complete(asyncio.ensure_future(run(url_list, num_concurrent=CONCURRENT_REQUESTS)))
+complete_responses = loop.run_until_complete(
+    asyncio.ensure_future(run(url_list, num_concurrent=CONCURRENT_REQUESTS))
+)
 elapsed = default_timer() - start_time
-print('Total Elapsed {}'.format(elapsed))
-print('Avg time taken {0:4.2f} ms'.format(1000*elapsed/len(url_list)))
+print("Total Elapsed {}".format(elapsed))
+print("Avg time taken {0:4.2f} ms".format(1000 * elapsed / len(url_list)))
 
 # Below we can see the output of some of our calls
 
 complete_responses[:3]
 
-num_succesful=[i[0]['result'][0]['image'][0][0] for i in complete_responses].count('n02127052 lynx, catamount')
-print('Succesful {} out of {}'.format(num_succesful, len(url_list)))
+num_succesful = [i[0]["result"][0]["image"][0][0] for i in complete_responses].count(
+    "n02127052 lynx, catamount"
+)
+print("Succesful {} out of {}".format(num_succesful, len(url_list)))
 
 # Example response
 plt.imshow(to_img(IMAGEURL))
