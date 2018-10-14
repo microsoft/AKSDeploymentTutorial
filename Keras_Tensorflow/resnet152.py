@@ -34,10 +34,15 @@ from keras.preprocessing import image
 from keras.utils.data_utils import get_file
 from keras.applications.imagenet_utils import decode_predictions
 from keras.applications.imagenet_utils import preprocess_input
-from keras.applications.imagenet_utils import _obtain_input_shape
 
 import sys
 sys.setrecursionlimit(3000)
+
+from packaging import version
+if version.parse(sys.modules['keras'].__version__) > version.parse('2.2.0'):
+    from keras_applications.imagenet_utils import _obtain_input_shape
+else:
+    from keras.applications.imagenet_utils import _obtain_input_shape
 
 WEIGHTS_PATH = 'https://github.com/adamcasson/resnet152/releases/download/v0.1/resnet152_weights_tf.h5'
 WEIGHTS_PATH_NO_TOP = 'https://github.com/adamcasson/resnet152/releases/download/v0.1/resnet152_weights_tf_notop.h5'
