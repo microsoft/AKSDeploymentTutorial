@@ -19,11 +19,18 @@ In this repository there are a number of tutorials in Jupyter notebooks that hav
  * Testing the throughput of our model
  * Cleaning up resources
  
-The application we will develop is a simple image classification service, where we will submit an image and get back what class the image belongs to. 
+## Design
+![alt text](static/Design.png "Design")
+
+The application we will develop is a simple image classification service, where we will submit an image and get back what class the image belongs to. The application flow for the deep learning model is as follows:
+1)	The client sends a HTTP POST request with the encoded image data.
+2)	The Flask app extracts the image from the request.
+3)	The image is then appropriately preprocessed and sent to the model for scoring.
+4)	The scoring result is then piped into a JSON object and returned to the client.
 
 If you already have a Docker image that you would like to deploy you can skip the first four notebooks.
 
-**NOTE**: The tutorial goes through step by step how to deploy a deep learning model on Azure it **does** **not** include enterprise best practices such as securing the endpoints and setting up remote logging etc. 
+**NOTE**: The tutorial goes through step by step how to deploy a deep learning model on Azure; it **does** **not** include enterprise best practices such as securing the endpoints and setting up remote logging etc. 
 
 ## Prerequisites
 * Linux(Ubuntu). The tutorial was developed on an Azure Linux DSVM
@@ -31,7 +38,7 @@ If you already have a Docker image that you would like to deploy you can skip th
 * [Dockerhub account](https://hub.docker.com/)
 * Port 9999 open: Jupyter notebook will use port 9999 so please ensure that it is open. For instructions on how to do that on Azure see [here](https://blogs.msdn.microsoft.com/pkirchner/2016/02/02/allow-incoming-web-traffic-to-web-server-in-azure-vm/)
 
-## Setting Up
+## Setup
 1. Clone the repo:
 ```bash
 git clone <repo web URL>
@@ -55,8 +62,11 @@ jupyter notebook
 ```
 7. Start the first notebook and make sure the kernel corresponding to the above environment is selected.
 
+## Steps
+After following the setup instructions above, run the Jupyter notebooks in order. The same basic steps are followed for each deep learning framework.
+
 ## Cleaning up
-To remove the conda environment created see [here](https://conda.io/docs/commands/env/conda-env-remove.html)
+To remove the conda environment created see [here](https://conda.io/docs/commands/env/conda-env-remove.html). The last Jupyter notebook within each folder also gives details on deleting Azure resources associated with this repo.
 
 # Contributing
 
