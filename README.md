@@ -32,6 +32,8 @@ If you already have a Docker image that you would like to deploy you can skip th
 
 **NOTE**: The tutorial goes through step by step how to deploy a deep learning model on Azure; it **does** **not** include enterprise best practices such as securing the endpoints and setting up remote logging etc. 
 
+**Deploying with GPUS:** For a detailed comparison of the deployments of various deep learning models, see the blog post [here](https://azure.microsoft.com/en-us/blog/gpus-vs-cpus-for-deployment-of-deep-learning-models/) which provides evidence that, at least in the scenarios tested, GPUs provide better throughput and stability at a lower cost.
+
 ## Prerequisites
 * Linux(Ubuntu). The tutorial was developed on an Azure Linux DSVM
 * [Docker installed](https://docs.docker.com/v17.12/install/linux/docker-ee/ubuntu/). NOTE: Even with docker installed you may need to set it up so that you don't require sudo to execute docker commands see ["Manage Docker as a non-root user"](https://docs.docker.com/install/linux/linux-postinstall/) 
