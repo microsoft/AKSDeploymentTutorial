@@ -1,3 +1,5 @@
+# This repo is no longer actively maintained, please see newer version available using Azure Machine Learning [here](https://github.com/Microsoft/AKSDeploymentTutorial_AML).
+
 ### Authors: Mathew Salvaris and Fidan Boylu Uz
 
 # Deploy Deep Learning CNN on Kubernetes Cluster with GPUs
